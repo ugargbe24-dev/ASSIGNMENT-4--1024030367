@@ -6,11 +6,11 @@ int queue[SIZE];
 int front = -1, rear = -1;
 
 bool isEmpty() {
-    return (front == -1);
+    return (front == -1 || front > rear);
 }
 
 bool isFull() {
-    return ((rear + 1) % SIZE == front);
+    return (rear == SIZE - 1);
 }
 
 void enqueue(int x) {
@@ -18,9 +18,8 @@ void enqueue(int x) {
         cout << "Queue is Full!\n";
         return;
     }
-    if (front == -1) front = 0; // first element
-    rear = (rear + 1) % SIZE;
-    queue[rear] = x;
+    if (front == -1) front = 0;
+    queue[++rear] = x;
     cout << x << " inserted into queue\n";
 }
 
@@ -30,11 +29,7 @@ void dequeue() {
         return;
     }
     cout << queue[front] << " removed from queue\n";
-    if (front == rear) {
-        front = rear = -1; // queue becomes empty
-    } else {
-        front = (front + 1) % SIZE;
-    }
+    front++;
 }
 
 void peek() {
@@ -51,43 +46,8 @@ void display() {
         return;
     }
     cout << "Queue elements: ";
-    int i = front;
-    while (true) {
+    for (int i = front; i <= rear; i++) {
         cout << queue[i] << " ";
-        if (i == rear) break;
-        i = (i + 1) % SIZE;
     }
-    cout << endl;
-}
+    c
 
-int main() {
-    int choice, val;
-    do {
-        cout << "\n--- Queue Menu ---\n";
-        cout << "1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                cout << "Enter value to insert: ";
-                cin >> val;
-                enqueue(val);
-                break;
-            case 2:
-                dequeue();
-                break;
-            case 3:
-                peek();
-                break;
-            case 4:
-                display();
-                break;
-            case 5:
-                cout << "Exiting...\n";
-                break;
-            default:
-                cout << "Invalid choice!\n";
-        }
-    } while (choice != 5);
-    return 0;
-}
